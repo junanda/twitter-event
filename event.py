@@ -16,14 +16,14 @@ class Event:
         return summarize(doc)
 
     def get_date_event(self, doc):
-        date_format = re.compile(r"[ADFJMNOS]\w* [\d]{1,2}, [\d]{4}")
+        date_format = re.compile(r"[ADFJMNOS]\w* [\d]{1,2}, [\d]{4}|[ADFJMNOS]\w* [\d]{1,2} [\d]{4}")
         return date_format.findall(doc)
 
     def start(self):
         link_from_tweet = self.tw.agent_get_link_on_screen(self.tag_search)
         self.web.urls = link_from_tweet
 
-        text_clean_format = self.web.start_get()
+        text_clean_format = self.web.start_get
 
         for date in text_clean_format:
             print(self.get_date_event(date))
