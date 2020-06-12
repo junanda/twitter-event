@@ -10,7 +10,7 @@ class Web:
         self.urls = []
 
     def tag_visible(self, element):
-        if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]', 'nav', 'footer', 'header']:
+        if element.parent.name in ['style', 'script', 'head', 'title', '[document]', 'nav', 'footer']:
             return False
         if isinstance(element, Comment):
             return False
@@ -21,6 +21,9 @@ class Web:
         clean_text = ''
         bs_soup = BeautifulSoup(request.text, 'lxml')
         texts = bs_soup.findAll(text=True)
+        title = bs_soup.find_all('title')
+        print(title)
+        #texts = bs_soup.find_all('span')
         # check form ready or not
         # if form true extract from from web page_source
         form = bs_soup.find('form')
@@ -45,7 +48,6 @@ class Web:
         # return data
         return clean_text
 
-    @property
     def start_get(self):
         dat_extra = []
         for url in self.urls:
