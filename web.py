@@ -25,22 +25,30 @@ class Web:
 
         # find title and meta data title
         if bs_soup.find('title'):
-            title = bs_soup.find('title').string
-            # title = title.string
+            title = bs_soup.find('title')
+            title = title.string
+            print("Title: {}".format(title))
+        elif bs_soup.find("meta", property="og:title"):
+            title = bs_soup.find('meta', property="og:title")
+            title = title['content']
             print("Title: {}".format(title))
         else:
-            title = bs_soup.find('meta', property='og:title')['content']
-            # title = title['content']
+            title = bs_soup.find('meta', {"name": "og:title"})
+            title = title['content']
             print("Title: {}".format(title))
 
         # find meta data with property description
-        if bs_soup.find('meta', property='description'):
-            desc = bs_soup.find('meta', property='description')['content']
-            # desc = desc['content']
+        if bs_soup.find('meta', {"name": "description"}):
+            desc = bs_soup.find('meta', {"name": "description"})
+            desc = desc['content']
+            print("Description: {}".format(desc))
+        elif bs_soup.find("meta", property="og:description"):
+            desc = bs_soup.find('meta', property="og:description")
+            desc = desc['content']
             print("Description: {}".format(desc))
         else:
-            desc = bs_soup.find('meta', property='og:description')['content']
-            # desc = desc['content']
+            desc = bs_soup.find('meta', {"name":"og:description"})
+            desc = desc['content']
             print("Description: {}".format(desc))
 
         # link_extend = bs_soup.find('meta', property="og:link")
@@ -93,16 +101,17 @@ class Web:
                 #
                 # dat_extra.append(self.ektraksiData(response))
                 print("request....")
-                re = requests.get(url)
+                re = requests.get(url, headers={'User-Agent': user_agent_old_phone})
                 print("Check request history")
                 for rr in re.history:
                     print(rr.status_code, rr.url)
 
-                html = requests.get(re.url)
+                print(re.status_code, re.url)
+                html = requests.get(re.url, headers={'User-Agent': user_agent_old_phone})
                 if html.status_code != 200:
                     txt_dat, detail_info = self.ektraksiData(re)
                     # dat_extra.append(self.ektraksiData(re))
-                txt_dat, detail_info = self.ektraksiData(re)
+                txt_dat, detail_info = self.ektraksiData(html)
                 # dat_extra.append(self.ektraksiData(html))
 
                 dat_extra.append(txt_dat)
@@ -121,7 +130,5 @@ class Web:
                 print("\n")
             except Exception as e:
                 print(e)
-
-        print("Finish ....")
 
         return dat_extra, data_detail
