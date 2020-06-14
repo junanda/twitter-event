@@ -18,6 +18,29 @@ class Web:
         return True
 
     @staticmethod
+    def get_form_details(form):
+        """return html details of a form, include action, method and list of controls (inputs, etc)"""
+        details = {}
+        action = form.attrs.get("action")
+        method = form.attrs.get("method", "post")
+
+        # get all forms input
+        inputs = []
+        for input_tag in form.find_all("input"):
+            input_type = input_tag.attrs.get("type", "text")
+            input_name = input_tag.attrs.get("name")
+            input_value = input_tag.attrs.get("value", "")
+            # add to that list
+            inputs.append({'type': input_type, 'name': input_name, 'value': input_value})
+
+        # put everything to the resulting dictionary
+        details["action"] = action
+        details["methods"] = method
+        details["inputs"] = inputs
+
+        return details
+
+    @staticmethod
     def get_title(response):
         if response.find('title'):
             title = response.find('title')
@@ -45,7 +68,7 @@ class Web:
             desc = desc['content']
             print("Description: {}".format(desc))
         else:
-            desc = response.find('meta', {"name":"og:description"})
+            desc = response.find('meta', {"name": "og:description"})
             desc = desc['content']
             print("Description: {}".format(desc))
 
@@ -69,14 +92,15 @@ class Web:
 
         # check form ready or not
         # if form true extract from from web page_source
-        form = bs_soup.find("form")
-        if form:
-            if form.get('method') == 'POST':
-                fields = form.findAll(('input', 'button', 'select', 'textarea'))
-                action = form.get('action')
-                print(action)
-                formdata = dict((field.get('name'), field.get('value')) for field in fields)
-                print(formdata)
+        forms = bs_soup.find_all("form")
+
+        if forms:
+            for i, form in enumerate(forms, start=1):
+                forms_detail = self.get_form_details(form)
+                print("="*10, f"form#{i}", "="*10)
+                print(forms_detail)
+        else:
+            forms_detail = None
 
         # filter data head, footer, 'style', 'script', 'head', 'title', 'meta', '[document]'
         # get all text in web page_source
@@ -86,10 +110,10 @@ class Web:
         for sen in text:
             if sen:
                 sen = sen.rstrip().lstrip()
-                clean_text += sen+' '
+                clean_text += sen + ' '
 
         # return data
-        return clean_text , {'title': title, 'description': desc, 'link': link_extend}
+        return clean_text, {'title': title, 'description': desc, 'link': link_extend, 'form': forms_detail}
 
     def start_get(self):
         dat_extra = []
