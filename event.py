@@ -34,17 +34,16 @@ class Event:
 
         for index, doc in enumerate(text_clean_format):
             try:
-                print(index)
                 out_text.append({'date': self.get_date_event(doc), 'summarize': self.summarization(doc),'detail': detail[index]})
             except Exception as e:
                 print(e)
 
-        print("----------------------\n")
+        print("Finish.........\n")
         pr(out_text)
         # yield out_text
 
 
 if __name__ == '__main__':
 
-    ev = Event("mongodb webinars")
+    ev = Event("kubernetes webinars")
     ev.start()
