@@ -45,5 +45,5 @@ class Event:
 
 if __name__ == '__main__':
 
-    ev = Event("mongodb webinars")
+    ev = Event("kubernetes webinars")
     ev.start()
