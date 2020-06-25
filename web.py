@@ -10,7 +10,7 @@ class Web:
         self.urls = []
 
     def tag_visible(self, element):
-        if element.parent.name in ['style', 'script', 'head', 'title', '[document]', 'nav', 'footer']:
+        if element.parent.name in ['style', 'script', 'title', '[document]', 'nav', 'footer']:
             return False
         if isinstance(element, Comment):
             return False
@@ -50,10 +50,12 @@ class Web:
             title = response.find('meta', property="og:title")
             title = title['content']
             print("Title: {}".format(title))
-        else:
+        elif response.find('meta', {"name": "og:title"}):
             title = response.find('meta', {"name": "og:title"})
             title = title['content']
             print("Title: {}".format(title))
+        else:
+            title = None
 
         return title
 
@@ -67,18 +69,20 @@ class Web:
             desc = response.find('meta', property="og:description")
             desc = desc['content']
             print("Description: {}".format(desc))
-        else:
+        elif response.find('meta', {"name": "og:description"}):
             desc = response.find('meta', {"name": "og:description"})
             desc = desc['content']
             print("Description: {}".format(desc))
+        else:
+            desc = None
 
         return desc
 
     def ektraksiData(self, request):
         clean_text = ''
         bs_soup = BeautifulSoup(request.content, 'lxml')
-
         texts = bs_soup.findAll(text=True)
+        article = bs_soup.find_all('article')
 
         # find title and meta data title
         title = self.get_title(bs_soup)
@@ -91,9 +95,8 @@ class Web:
         print("Link website: {}".format(link_extend))
 
         # check form ready or not
-        # if form true extract from from web page_source
+        # if form ready extract from from web page_source
         forms = bs_soup.find_all("form")
-
         if forms:
             for i, form in enumerate(forms, start=1):
                 forms_detail = self.get_form_details(form)
@@ -102,15 +105,22 @@ class Web:
         else:
             forms_detail = None
 
-        # filter data head, footer, 'style', 'script', 'head', 'title', 'meta', '[document]'
-        # get all text in web page_source
-        visible_text = filter(self.tag_visible, texts)
+        if article:
+            # remove javascript code in html parser
+            article = re.sub(r'<script.+?</script>', '', str(article[0]), flags=re.DOTALL)
+            # remove image
+            pattern = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+            doc = re.sub(pattern, '', str(article))
+            clean_text = ' '.join(doc.split())
+        else:
+            # filter data head, footer, 'style', 'script', 'head', 'title', 'meta', '[document]'
+            visible_text = filter(self.tag_visible, texts)
 
-        text = [t.strip() for t in visible_text]
-        for sen in text:
-            if sen:
-                sen = sen.rstrip().lstrip()
-                clean_text += sen + ' '
+            text = [t.strip() for t in visible_text]
+            for sen in text:
+                if sen:
+                    sen = sen.rstrip().lstrip()
+                    clean_text += sen + ' '
 
         # return data
         return clean_text, {'title': title, 'description': desc, 'link': link_extend, 'form': forms_detail}
@@ -120,24 +130,24 @@ class Web:
         data_detail = []
         for url in self.urls:
             try:
-
-                print("request....")
+                print("request url <GET> {} ....".format(url))
                 response = requests.get(url, headers={'User-Agent': user_agent_old_phone})
-                print("Check request history")
+                # print("Check request history")
                 for rr in response.history:
-                    print(rr.status_code, rr.url)
+                    print("status response: {} from request <GET> {} ".format(rr.status_code, rr.url))
 
-                print(response.status_code, response.url)
+                print("status response: {} from request <GET> {}".format(response.status_code, response.url))
                 html = requests.get(response.url, headers={'User-Agent': user_agent_old_phone})
                 if html.status_code != 200:
                     txt_dat, detail_info = self.ektraksiData(response)
-                txt_dat, detail_info = self.ektraksiData(html)
+                else:
+                    txt_dat, detail_info = self.ektraksiData(html)
 
                 dat_extra.append(txt_dat)
                 data_detail.append(detail_info)
 
                 print("\n")
             except Exception as e:
-                print(e)
+                print("Error : {}".format(e))
 
         return dat_extra, data_detail
