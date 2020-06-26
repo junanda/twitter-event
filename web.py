@@ -1,8 +1,10 @@
 import requests
 import re
 from bs4 import BeautifulSoup
+from bs4 import SoupStrainer
 from bs4.element import Comment
 from config import user_agent_old_phone
+from pprint import pprint as pr
 
 
 class Web:
@@ -45,15 +47,15 @@ class Web:
         if response.find('title'):
             title = response.find('title')
             title = title.string
-            print("Title: {}".format(title))
+            # print("Title: {}".format(title))
         elif response.find("meta", property="og:title"):
             title = response.find('meta', property="og:title")
             title = title['content']
-            print("Title: {}".format(title))
+            # print("Title: {}".format(title))
         elif response.find('meta', {"name": "og:title"}):
             title = response.find('meta', {"name": "og:title"})
             title = title['content']
-            print("Title: {}".format(title))
+            # print("Title: {}".format(title))
         else:
             title = None
 
@@ -63,26 +65,40 @@ class Web:
     def get_description(response):
         if response.find('meta', {"name": "description"}):
             desc = response.find('meta', {"name": "description"})
-            desc = desc['content']
-            print("Description: {}".format(desc))
+            if desc.get('content'):
+                desc = desc['content']
+            else:
+                desc = None
+            # print("Description: {}".format(desc))
         elif response.find("meta", property="og:description"):
             desc = response.find('meta', property="og:description")
             desc = desc['content']
-            print("Description: {}".format(desc))
+            # print("Description: {}".format(desc))
         elif response.find('meta', {"name": "og:description"}):
             desc = response.find('meta', {"name": "og:description"})
             desc = desc['content']
-            print("Description: {}".format(desc))
+            # print("Description: {}".format(desc))
         else:
             desc = None
 
         return desc
 
+    def selection_content(self, response):
+        if response.find_all('article'):
+            return response.find_all('article')
+        elif response.find_all('section'):
+            return response.find_all('section')
+        elif response.find(class_="content"):
+            return response.find(class_="content")
+        else:
+            return response.find_all(id="content")
+
     def ektraksiData(self, request):
         clean_text = ''
         bs_soup = BeautifulSoup(request.content, 'lxml')
-        texts = bs_soup.findAll(text=True)
-        article = bs_soup.find_all('article')
+        # texts = bs_soup.findAll(text=True)
+        # article = bs_soup.find_all(re.compile(r"article|section|div#content"))
+        article = self.selection_content(bs_soup)
 
         # find title and meta data title
         title = self.get_title(bs_soup)
@@ -100,27 +116,31 @@ class Web:
         if forms:
             for i, form in enumerate(forms, start=1):
                 forms_detail = self.get_form_details(form)
-                print("="*10, f"form#{i}", "="*10)
-                print(forms_detail)
+                # print("="*10, f"form#{i}", "="*10)
+                # print(forms_detail)
         else:
             forms_detail = None
 
         if article:
+            print("artikel")
             # remove javascript code in html parser
-            article = re.sub(r'<script.+?</script>', '', str(article[0]), flags=re.DOTALL)
+            article = re.sub(r'<script.+?</script>', '', str(article), flags=re.DOTALL)
             # remove image
             pattern = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
             doc = re.sub(pattern, '', str(article))
             clean_text = ' '.join(doc.split())
         else:
+            print("Text")
             # filter data head, footer, 'style', 'script', 'head', 'title', 'meta', '[document]'
-            visible_text = filter(self.tag_visible, texts)
+            # visible_text = filter(self.tag_visible, texts)
+            #
+            # text = [t.strip() for t in visible_text]
+            # for sen in text:
+            #     if sen:
+            #         sen = sen.rstrip().lstrip()
+            #         clean_text += sen + ' '
 
-            text = [t.strip() for t in visible_text]
-            for sen in text:
-                if sen:
-                    sen = sen.rstrip().lstrip()
-                    clean_text += sen + ' '
+        # pr(clean_text)
 
         # return data
         return clean_text, {'title': title, 'description': desc, 'link': link_extend, 'form': forms_detail}
@@ -129,25 +149,23 @@ class Web:
         dat_extra = []
         data_detail = []
         for url in self.urls:
-            try:
-                print("request url <GET> {} ....".format(url))
-                response = requests.get(url, headers={'User-Agent': user_agent_old_phone})
-                # print("Check request history")
-                for rr in response.history:
-                    print("status response: {} from request <GET> {} ".format(rr.status_code, rr.url))
 
-                print("status response: {} from request <GET> {}".format(response.status_code, response.url))
-                html = requests.get(response.url, headers={'User-Agent': user_agent_old_phone})
-                if html.status_code != 200:
-                    txt_dat, detail_info = self.ektraksiData(response)
-                else:
-                    txt_dat, detail_info = self.ektraksiData(html)
+            print("request url <GET> {} ....".format(url))
+            response = requests.get(url, headers={'User-Agent': user_agent_old_phone})
+            # print("Check request history")
+            for rr in response.history:
+                print("status response: {} from request <GET> {} ".format(rr.status_code, rr.url))
 
-                dat_extra.append(txt_dat)
-                data_detail.append(detail_info)
+            print("status response: {} from request <GET> {}".format(response.status_code, response.url))
+            html = requests.get(response.url, headers={'User-Agent': user_agent_old_phone})
+            if html.status_code != 200:
+                txt_dat, detail_info = self.ektraksiData(response)
+            else:
+                txt_dat, detail_info = self.ektraksiData(html)
 
-                print("\n")
-            except Exception as e:
-                print("Error : {}".format(e))
+            dat_extra.append(txt_dat)
+            data_detail.append(detail_info)
+
+            print("\n")
 
         return dat_extra, data_detail
