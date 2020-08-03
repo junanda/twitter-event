@@ -40,9 +40,10 @@ class Event:
 
         for index, doc in enumerate(text_clean_format):
             try:
+                # print(detail[index]['link'])
                 out_data.append(
                     # {'date': self.get_date_event(doc), 'summarize': self.summarization(doc), 'detail': detail[index]}) # using gensim.summarize
-                    {'date': self.get_date_event(doc), 'summarize': text_summarize(doc, list_score=12), 'detail': detail[index]})
+                    {'date': self.get_date_event(doc), 'summarize': "{} <a href='{}' target='_blank'>Read More and register here...</a>".format(text_summarize(doc, list_score=12), detail[index]['link']), 'detail': detail[index]})
             except Exception as e:
                 print("error: {}".format(e))
 
