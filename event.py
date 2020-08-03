@@ -2,7 +2,6 @@ from tweet import Twitter
 from gensim.summarization import summarize
 from web import Web
 import re
-from pprint import pprint as pr
 from summary import text_summarize
 
 
@@ -20,6 +19,7 @@ class Event:
             hasil = summarize(doc)
             return hasil
         except:
+            # None data to summarize
             return None
 
     @staticmethod
@@ -41,16 +41,10 @@ class Event:
         for index, doc in enumerate(text_clean_format):
             try:
                 out_data.append(
-                    # {'date': self.get_date_event(doc), 'summarize': self.summarization(doc), 'detail': detail[index]})
+                    # {'date': self.get_date_event(doc), 'summarize': self.summarization(doc), 'detail': detail[index]}) # using gensim.summarize
                     {'date': self.get_date_event(doc), 'summarize': text_summarize(doc, list_score=12), 'detail': detail[index]})
             except Exception as e:
-                print("errornya lagi: {}".format(e))
+                print("error: {}".format(e))
 
         print("Finish.........\n")
         return out_data
-
-
-if __name__ == '__main__':
-    ev = Event("kubernetes webinars")
-    data = ev.start()
-    pr(data)

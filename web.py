@@ -1,10 +1,8 @@
 import requests
 import re
 from bs4 import BeautifulSoup
-from bs4 import SoupStrainer
 from bs4.element import Comment
 from config import user_agent_old_phone
-from pprint import pprint as pr
 
 
 class Web:
@@ -47,15 +45,12 @@ class Web:
         if response.find('title'):
             title = response.find('title')
             title = title.string
-            # print("Title: {}".format(title))
         elif response.find("meta", property="og:title"):
             title = response.find('meta', property="og:title")
             title = title['content']
-            # print("Title: {}".format(title))
         elif response.find('meta', {"name": "og:title"}):
             title = response.find('meta', {"name": "og:title"})
             title = title['content']
-            # print("Title: {}".format(title))
         else:
             title = None
 
@@ -69,29 +64,38 @@ class Web:
                 desc = desc['content']
             else:
                 desc = None
-            # print("Description: {}".format(desc))
         elif response.find("meta", property="og:description"):
             desc = response.find('meta', property="og:description")
             desc = desc['content']
-            # print("Description: {}".format(desc))
         elif response.find('meta', {"name": "og:description"}):
             desc = response.find('meta', {"name": "og:description"})
             desc = desc['content']
-            # print("Description: {}".format(desc))
         else:
             desc = None
 
         return desc
 
-    def selection_content(self, response):
+    @staticmethod
+    def selection_content(response):
         if response.find_all('article'):
             return response.find_all('article')
         elif response.find_all('section'):
             return response.find_all('section')
-        elif response.find(class_="content"):
-            return response.find(class_="content")
-        else:
+        elif response.find_all(class_="content"):
+            return response.find_all(class_="content")
+        elif response.find_all(id="content"):
             return response.find_all(id="content")
+        else:
+            return response.find_all("main")
+
+    @staticmethod
+    def selection_content_url(response):
+        list_element = response.find_all()
+        el_find = ['article', 'section', 'div.content']
+
+        for tag in list_element:
+            if tag.name in el_find:
+                return response.find_all(tag.name)
 
     def ektraksiData(self, request):
         clean_text = ''
@@ -99,19 +103,19 @@ class Web:
         # texts = bs_soup.findAll(text=True)
         # article = bs_soup.find_all(re.compile(r"article|section|div#content"))
         article = self.selection_content(bs_soup)
-
-        # find title and meta data title
+        frame = bs_soup.find_all(re.compile(r"iframe|iFrame"))
+        if frame:
+            print(frame)
+        # find element tag for title
         title = self.get_title(bs_soup)
 
-        # find meta data with property description
+        # find element tag for description
         desc = self.get_description(bs_soup)
 
-        # link_extend = bs_soup.find('meta', property="og:link")
         link_extend = request.url
-        print("Link website: {}".format(link_extend))
 
         # check form ready or not
-        # if form ready extract from from web page_source
+        # if form ready extract form from web page_source
         forms = bs_soup.find_all("form")
         if forms:
             for i, form in enumerate(forms, start=1):
@@ -122,10 +126,9 @@ class Web:
             forms_detail = None
 
         if article:
-            print("artikel")
-            # remove javascript code in html parser
+            # remove javascript code in document
             article = re.sub(r'<script.+?</script>', '', str(article), flags=re.DOTALL)
-            # remove image
+            # remove image tag
             pattern = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
             doc = re.sub(pattern, '', str(article))
             clean_text = ' '.join(doc.split())
@@ -140,8 +143,6 @@ class Web:
             #         sen = sen.rstrip().lstrip()
             #         clean_text += sen + ' '
 
-        # pr(clean_text)
-
         # return data
         return clean_text, {'title': title, 'description': desc, 'link': link_extend, 'form': forms_detail}
 
@@ -151,17 +152,18 @@ class Web:
         for url in self.urls:
 
             print("request url <GET> {} ....".format(url))
-            response = requests.get(url, headers={'User-Agent': user_agent_old_phone})
+            response = requests.get(url)
             # print("Check request history")
             for rr in response.history:
                 print("status response: {} from request <GET> {} ".format(rr.status_code, rr.url))
 
             print("status response: {} from request <GET> {}".format(response.status_code, response.url))
-            html = requests.get(response.url, headers={'User-Agent': user_agent_old_phone})
-            if html.status_code != 200:
-                txt_dat, detail_info = self.ektraksiData(response)
-            else:
+            # html = requests.get(response.url, headers={'User-Agent': user_agent_old_phone})
+            html = requests.get(response.url)
+            if html.status_code == 200:
                 txt_dat, detail_info = self.ektraksiData(html)
+            else:
+                txt_dat, detail_info = self.ektraksiData(response)
 
             dat_extra.append(txt_dat)
             data_detail.append(detail_info)

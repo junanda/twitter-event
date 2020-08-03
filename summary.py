@@ -31,13 +31,13 @@ def text_summarize(raw_doc, list_score=8):
     for sent in sentence_list:
         for word in sent:
             if word.text.lower() in word_frequencies.keys():
-                if len(sent.text.split(' ')) < 30 :
+                if len(sent.text.split(' ')) < 30:
                     if sent not in sentence_score.keys():
                         sentence_score[sent] = word_frequencies[word.text.lower()]
                     else:
                         sentence_score[sent] += word_frequencies[word.text.lower()]
 
-    # find N largest
+    # find N largest to result summarize
     summary_sentence = nlargest(list_score,sentence_score, key=sentence_score.get)
     final_sentence = [w.text for w in summary_sentence]
     summary = ' '.join(final_sentence)

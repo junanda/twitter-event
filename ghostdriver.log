@@ -1,0 +1,80 @@
+[INFO  - 2020-06-30T05:14:41.536Z] GhostDriver - Main - running on port 38571
+[INFO  - 2020-06-30T05:14:41.757Z] Session [9a72e760-ba90-11ea-96bf-4541ce5d9e2c] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2020-06-30T05:14:41.757Z] Session [9a72e760-ba90-11ea-96bf-4541ce5d9e2c] - page.customHeaders:  - {}
+[INFO  - 2020-06-30T05:14:41.757Z] Session [9a72e760-ba90-11ea-96bf-4541ce5d9e2c] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2020-06-30T05:14:41.758Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 9a72e760-ba90-11ea-96bf-4541ce5d9e2c
+[ERROR - 2020-06-30T05:14:49.755Z] Session [9a72e760-ba90-11ea-96bf-4541ce5d9e2c] - page.onError - msg: TypeError: undefined is not an object (evaluating 'window.location.href.split("pivotal.io/")[1].split')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-06-30T05:14:49.756Z] Session [9a72e760-ba90-11ea-96bf-4541ce5d9e2c] - page.onError - stack:
+  (anonymous function) (https://tanzu.vmware.com/content/webinars/jun-30-making-k8s-great-improving-the-kubernetes-developer-experience?utm_campaign=Global_BT_Q221_Improving-K8s-Developer-Experience&utm_source=twitter&utm_medium=social:3118)
+  each (https://content.cdntwrk.com/js/hubs/hubs_app.95d5e6dadce90305abc8.js:1)
+  each (https://content.cdntwrk.com/js/hubs/hubs_app.95d5e6dadce90305abc8.js:1)
+  (anonymous function) (https://tanzu.vmware.com/content/webinars/jun-30-making-k8s-great-improving-the-kubernetes-developer-experience?utm_campaign=Global_BT_Q221_Improving-K8s-Developer-Experience&utm_source=twitter&utm_medium=social:3117)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-06-30T05:14:50.043Z] Session [9a72e760-ba90-11ea-96bf-4541ce5d9e2c] - page.onError - msg: TypeError: undefined is not a function (evaluating 'bannerParent.prepend(bannerChild)')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-06-30T05:14:50.043Z] Session [9a72e760-ba90-11ea-96bf-4541ce5d9e2c] - page.onError - stack:
+  global code (https://tanzu.vmware.com/content/webinars/jun-30-making-k8s-great-improving-the-kubernetes-developer-experience?utm_campaign=Global_BT_Q221_Improving-K8s-Developer-Experience&utm_source=twitter&utm_medium=social:1)
+  insertBefore (:0)
+  (anonymous function) (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1215)
+  (anonymous function) (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1216)
+  (anonymous function) (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1216)
+  c (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1217)
+  od (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1030)
+  e (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1102)
+  (anonymous function) (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:993)
+  (anonymous function) (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1103)
+  (anonymous function) (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1102)
+  Xj (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1103)
+  Zj (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1105)
+  hn (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1136)
+  gn (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1135)
+  jn (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1138)
+  kn (https://www.googletagmanager.com/gtm.js?id=GTM-PMT66RC:1138)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-06-30T05:14:57.128Z] Session [9a72e760-ba90-11ea-96bf-4541ce5d9e2c] - page.onError - msg: SyntaxError: JSON Parse error: Invalid number
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-06-30T05:14:57.128Z] Session [9a72e760-ba90-11ea-96bf-4541ce5d9e2c] - page.onError - stack:
+  parse (https://tanzu.vmware.com/content/webinars/jun-30-making-k8s-great-improving-the-kubernetes-developer-experience?utm_campaign=Global_BT_Q221_Improving-K8s-Developer-Experience&utm_source=twitter&utm_medium=social:1)
+  (anonymous function) (https://tanzu.vmware.com/content/webinars/jun-30-making-k8s-great-improving-the-kubernetes-developer-experience?utm_campaign=Global_BT_Q221_Improving-K8s-Developer-Experience&utm_source=twitter&utm_medium=social:1)
+
+  phantomjs://platform/console++.js:263 in error
+[INFO  - 2020-06-30T05:19:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T05:24:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T05:29:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T05:34:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T05:39:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T05:44:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T05:49:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T05:54:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T05:59:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:04:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:09:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:14:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:19:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:24:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:29:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:34:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:39:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:44:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:49:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:54:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T06:59:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:04:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:09:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:14:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:19:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:24:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:29:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:34:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:39:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:44:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:49:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:54:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T07:59:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2020-06-30T08:04:41.535Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW

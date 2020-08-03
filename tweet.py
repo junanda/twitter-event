@@ -22,6 +22,7 @@ class Twitter:
         for dt in data_twt:
             for u in dt.entities["urls"]:
                 if "https://twitter.com/" in u["expanded_url"]:
+                    print(dt.text)
                     data_ektraksi.append({'id': dt.id, 'name': dt.user.name, 'text': dt.text, 'url': u["expanded_url"]})
 
         return data_ektraksi
